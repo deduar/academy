@@ -8,15 +8,16 @@ services:
       - .:/app
     ports:
       - "3000:3000"
+    tty: true
     environment:
-      - MONGO_URI=mongodb://academy:academy@academy-db:27017/academy
+      - MONGO_URI=mongodb://academy:academy@academy-db:27017/academy?authSource=admin
     depends_on:
       - mongo
     networks:
       - academy
 
   mongo:
-    image: mongo:8.0.6
+    image: mongo:7.0.18
     container_name: academy-db
     ports:
       - "27017:27017"
@@ -24,13 +25,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=academy
       - MONGO_INITDB_ROOT_PASSWORD=academy
       - MONGO_INITDB_DATABASE=academy
-    volumes:
-      - mongo_data:/data/db
     networks:
       - academy
-
-volumes:
-  mongo_data:
 
 networks:
   academy:
