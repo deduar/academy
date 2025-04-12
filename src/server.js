@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { connectDB } = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const errorMiddleware = require('./middleware/errorMiddleware');
 require('dotenv').config();
@@ -16,11 +16,14 @@ app.use('/api/users', userRoutes);
 // Error handling middleware
 app.use(errorMiddleware);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// Connect to MongoDB and start the server
+connectDB()
     .then(() => {
         app.listen(PORT, () => {
-            console.log(`Server is running on http://${HOSTNAME}:${PORT}`);
+            console.log(`Server is running on http://localhost:${PORT}`);
         });
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+        console.error('Database connection failed:', err);
+        process.exit(1); // Exit the process with failure
+    });
