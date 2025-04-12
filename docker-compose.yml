@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: academy-app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://academy:academy@academy-db:27017/academy
+    depends_on:
+      - mongo
+    networks:
+      - academy
+
+  mongo:
+    image: mongo:8.0.6
+    container_name: academy-db
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=academy
+      - MONGO_INITDB_ROOT_PASSWORD=academy
+      - MONGO_INITDB_DATABASE=academy
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - academy
+
+volumes:
+  mongo_data:
+
+networks:
+  academy:
+    driver: bridge
+    name: academy
+    
+    
