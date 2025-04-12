@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/api/v1/users', userRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);
